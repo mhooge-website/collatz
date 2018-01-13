@@ -1,5 +1,17 @@
 <!DOCTYPE html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mastermind</title>
+    <link rel="stylesheet" type="text/css" href="/global-style.css">
+</head>
 <body>
+    <link rel="stylesheet" type="text/css" href="/projects/collatz/collatz-style.css">
     <script src="/projects/collatz/collatz.js"></script>
     <script>calculate(967);</script>
+
+    <div>
+        <p>Calculate Steps in Collatz Conjecture</p>
+        <input type="text" id="number-input" placeholder="Starting Number"></input>
+        <button onclick="calculate('number-input')";>Calculate</button>
+    </div>
 </body>

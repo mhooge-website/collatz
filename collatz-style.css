@@ -1,0 +1,12 @@
+div {
+    margin: auto;
+    left: 0; right: 0;
+    width: 250px;
+    position: relative;
+    text-align: center;
+}
+
+input {
+    width: 70%;
+    margin-bottom: 15px;
+}
