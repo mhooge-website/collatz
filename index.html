@@ -6,22 +6,33 @@
 </head>
 <body>
     <link rel="stylesheet" type="text/css" href="/projects/collatz/collatz-style.css">
+    <script src="/scripts/canvashelper.js"></script>
     <script src="/projects/collatz/graphview.js"></script>
     <script src="/projects/collatz/collatz.js"></script>
 
     <div id="main-div">
         <p id="header">Calculate Steps in Collatz Conjecture</p>
-        <input type="text" id="number-input" placeholder="Starting Number(s)" onchange="clearErrorMsg();"></input>
+        <input type="text" id="number-input" placeholder="Starting number(s)" onchange="clearErrorMsg();" onkeypress="keyPressed(event);"></input>
         <button onclick="displayInfo(true)";>?</button>
-        <button onclick="calculate('number-input')";>Calculate</button>
-        <canvas id="canvas"></canvas>
+        <button id="calculate-button" onclick="calculate('number-input')";>Calculate</button>
     </div>
+    <p id="result-tooltip"></p>
+    <canvas id="canvas"></canvas>
     <div id="help-div">
-        Input one or more numers and click calculate.<br><br>
-        Input several numbers seperated by commas (1, 2, 3),<br><br>
-        or input a range, seperated by a dash, (0-10).<br><br>
-        With multiple numbers, click on the amount of steps
-        to see a graph for that Collatz calculation.<br><br>
+        Collatz Conjecure: start with a number.
+        If that number is even, divide it by 2.
+        If it is odd, multiply it by 3 and add 1.
+        Count how many of these steps are needed, before it reaches 1.
+        <br><br>
+        Input one or more numers and click calculate.
+        <br><br>
+        Input several numbers seperated by commas (1, 2, 3),
+        <br><br>
+        or input a range, seperated by a dash, (0-10).
+        <br><br>
+        With multiple numbers, click on a button to see a 
+        graph for the Collatz calculation for that input.
+        <br><br>
         <button onclick="displayInfo(false);">OK</button>
     </div>
 </body>

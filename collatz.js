@@ -1,50 +1,80 @@
-var vertices;
+var highlightedButton;
 
 function calculate(inputId) {
     var div = document.getElementById("main-div");
-    try {
-        var children = document.getElementsByClassName("result")
-        let amount = children.length;
-        for(i = 0; i < amount; i++) {
-            div.removeChild(children.item(0));
-        }
-    }
-    catch(e) {}
+    clearResults();
 
     var inputArr;
     try {
         inputArr = parseInput(inputId);
     }
     catch(e) {
-        var text = document.createElement("p");
-        text.textContent = e.message;
-        text.id = "error-label";
-        div.insertBefore(text, div.lastChild);
+        showErrrorMsg(div, e.message);
         return;
     }
 
-    var drawResultGraph = inputArr.length == 1;
+    vertices = new Array(inputArr.length);
+    var maximums = new Array(inputArr.length);
+    if(inputArr.length > 1) {
+        let multiDiv = createMultiInputDiv(vertices);
+        
+        for(let i = 0; i < inputArr.length; i++) {
+            if(inputArr[i] < 2) continue;
+            let value = calculateCollatzValue(inputArr[i], vertices, maximums, i);
 
-    if(drawResultGraph) vertices = new Array(Math.ceil(inputArr[0]/10 + 10));
-
-    for(i = 0; i < inputArr.length; i++) {
-        var progress = inputArr[i];
-        var counter = 0;
-        while(progress > 1) {
-            if(drawResultGraph) vertices.push(progress);
-            if(progress % 2 == 1) progress = (progress * 3) + 1;
-            else progress /= 2;
-            if(counter % 1000 == 0) console.log(progress);
-            counter++;
+            let button = document.createElement("button");
+            button.addEventListener("click", () => {resultButtonSelected(button, vertices[i], maximums[i]);});
+            button.className = "result-button";
+            button.textContent = ""+inputArr[i];
+            multiDiv.appendChild(button);
+            if(i == 0) resultButtonSelected(button, vertices[i], maximums[i]);
         }
-
-        var text = document.createElement("p");
-        text.className = "result";
-        text.innerHTML = "<span id='input-label'>" + inputArr[i] + "</span> reached " + progress + " in <a id='steps-label' href='localhost:8000/projects/collatz/10'>" + counter + "</a> steps.";
-        div.insertBefore(text, div.lastChild);
+        document.body.insertBefore(multiDiv, document.getElementById("result-tooltip"));
     }
-    
-    if(drawResultGraph) drawGraph(vertices);
+    else {
+        if(inputArr < 2) {
+            showErrrorMsg(div, "Input must be larger than 1");
+            return
+        }
+        let value = calculateCollatzValue(inputArr[0], vertices, maximums, 0);
+
+        setResultTooltip(inputArr[0], value, vertices[0].length);
+    }
+    drawGraph(vertices[0], maximums[0]);
+}
+
+function showErrrorMsg(div, message) {
+    var text = document.createElement("p");
+    text.textContent = message;
+    text.id = "error-label";
+    div.appendChild(text);
+}
+
+function setResultTooltip(input, value, steps) {
+    showResultTooltip(true);
+    var text = document.getElementById("result-tooltip");
+    text.innerHTML = "<span id='input-label'>" + input + "</span> reached " + value + " in <span id='steps-label'>" + steps + "</span> steps.";
+}
+
+function showResultTooltip(show) {
+    document.getElementById("result-tooltip").style.display = show ? "block" : "none";
+}
+
+function calculateCollatzValue(value, vertices, maximums, i) {
+    var max = 0;
+    vertices[i] = new Array();
+    var nextVal = value;
+    var counter = 0;
+    vertices[i].push(nextVal);
+    while(nextVal > 1) {
+        if(nextVal > max) max = nextVal;
+        if(nextVal % 2 == 1) nextVal = (nextVal * 3) + 1;
+        else nextVal /= 2;
+        counter++;
+        vertices[i].push(nextVal);
+    }
+    maximums[i] = max;
+    return nextVal;
 }
 
 function parseInput(inputId) {
@@ -92,6 +122,38 @@ function extractList(values) {
         resultArr[i] = val;
     }
     return resultArr;
+}
+
+function createMultiInputDiv(vertices) {
+    let div = document.createElement("div");
+    div.className = "result";
+
+    return div;
+}
+
+function clearResults() {
+    try {
+        var children = document.getElementsByClassName("result")
+        let amount = children.length;
+        for(i = 0; i < amount; i++) {
+            document.body.removeChild(children.item(0));
+        }
+    }
+    catch(e) { console.log("Error"); }
+}
+
+function resultButtonSelected(button, vertices, max) {
+    if(highlightedButton != null) highlightedButton.style.borderColor = button.style.borderColor;
+    highlightedButton = button;
+    button.style.borderColor = "red";
+
+    setResultTooltip(button.textContent, vertices[vertices.length-1], vertices.length);
+
+    drawGraph(vertices, max);
+}
+
+function keyPressed(e) {
+    if(e.key == "Enter") calculate("number-input");
 }
 
 function displayInfo(display) {
