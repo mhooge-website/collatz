@@ -1,4 +1,33 @@
 var highlightedButton;
+var debug = true;
+
+function init() {
+    loadGraphStats();
+}
+
+function loadGraphStats() {
+    var request = new XMLHttpRequest();
+
+    request.onreadystatechange = function() {
+        console.log(this.responseText);
+        if(this.readyState == 4 && this.status == 200) {
+            let resArr = JSON.parse(this.responseText);
+
+            console.log(resArr[0][0]);
+            console.log(resArr[1][1]);
+            console.log(resArr[1][0]);
+
+            let text = document.getElementById("stats-div").textContent;
+            document.getElementById("stats-div").textContent = (text.replace("{pct_done}", resArr[0][0]).
+            replace("{max_steps}", resArr[1][1]).
+            replace("{input_max}", resArr[1][0]));
+        }
+        else if(this.state == 500) console.log("Error saving graph: " + this.responseText);
+    };
+
+    request.open("POST", "/projects/collatz/load_data.php", true);
+    request.send();
+}
 
 function calculate(inputId) {
     var div = document.getElementById("main-div");
@@ -17,7 +46,9 @@ function calculate(inputId) {
     var maximums = new Array(inputArr.length);
     if(inputArr.length > 1) {
         let multiDiv = createMultiInputDiv(vertices);
-        
+        let overflow = document.createElement("div");
+        overflow.id = "overflow-div";
+
         for(let i = 0; i < inputArr.length; i++) {
             if(inputArr[i] < 2) continue;
             let value = calculateCollatzValue(inputArr[i], vertices, maximums, i);
@@ -26,7 +57,8 @@ function calculate(inputId) {
             button.addEventListener("click", () => {resultButtonSelected(button, vertices[i], maximums[i]);});
             button.className = "result-button";
             button.textContent = ""+inputArr[i];
-            multiDiv.appendChild(button);
+            overflow.appendChild(button);
+            multiDiv.appendChild(overflow);
             if(i == 0) resultButtonSelected(button, vertices[i], maximums[i]);
         }
         document.body.insertBefore(multiDiv, document.getElementById("result-tooltip"));
@@ -40,7 +72,23 @@ function calculate(inputId) {
 
         setResultTooltip(inputArr[0], value, vertices[0].length);
     }
+    if(!debug) saveVertices(vertices);
     drawGraph(vertices[0], maximums[0]);
+}
+
+function saveVertices(vertices) {
+    var request = new XMLHttpRequest();
+
+    request.onreadystatechange = () => {
+        if(this.status == 500) console.log("Error saving graph: " + this.responseText);
+    };
+
+    var val = {"vertices":vertices};
+    var json = JSON.stringify(val);
+
+    request.open("POST", "/projects/collatz/save_data.php", true);
+    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    request.send("game="+json);
 }
 
 function showErrrorMsg(div, message) {
@@ -158,6 +206,10 @@ function keyPressed(e) {
 
 function displayInfo(display) {
     document.getElementById("help-div").style.display = display ? "block" : "none";
+}
+
+function displayStats(display) {
+    document.getElementById("stats-div").style.display = display ? "block" : "none";
 }
 
 function clearErrorMsg() {

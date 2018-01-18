@@ -14,7 +14,8 @@
         <p id="header">Calculate Steps in Collatz Conjecture</p>
         <input type="text" id="number-input" placeholder="Starting number(s)" onchange="clearErrorMsg();" onkeypress="keyPressed(event);"></input>
         <button onclick="displayInfo(true)";>?</button>
-        <button id="calculate-button" onclick="calculate('number-input')";>Calculate</button>
+        <button id="calculate-button" onclick="calculate('number-input');">Calculate</button>
+        <button id="stats-button" onclick="displayStats(true);">Statistics</button>
     </div>
     <p id="result-tooltip"></p>
     <canvas id="canvas"></canvas>
@@ -35,4 +36,22 @@
         <br><br>
         <button onclick="displayInfo(false);">OK</button>
     </div>
+    <div id="stats-div">
+        Of all the conjectures calculated:
+        <br><br>
+        Percentage reaching 1: {pct_done}.
+        <br><br>
+        Max steps for a graph: {max_steps},<br>
+        achieved with input {input_max}.
+        <br><br>
+        Average steps per graph: {avg_steps}.
+        <br><br>
+        Largest step to input ratio: {ratio},
+        achieved with input {input_ratio},
+        having {step_ratio} steps.
+        <br><br>
+        <button onclick="displayStats(false);">OK</button>
+    </div>
+
+    <script>init();</script>
 </body>

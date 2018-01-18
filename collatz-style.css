@@ -15,7 +15,14 @@ div {
 }
 
 .result {
+    max-height: 60px;
+    max-width: 500px;
+    overflow-x: scroll;
+}
+
+#overflow-div {
     text-align: center;
+    white-space: nowrap;
 }
 
 .result-button {
@@ -33,7 +40,7 @@ div {
     border-color: #dddddd;
 }
 
-#calculate-button {
+#main-div > button {
     font-size: 15px;
 }
 
@@ -59,7 +66,7 @@ div {
     color: blue;
 }
 
-#help-div {
+#help-div, #stats-div {
     margin-top: 40px;
     display: none;
     z-index: 2;
@@ -75,7 +82,14 @@ div {
     border-style: solid;
     border-radius: 5px;
     border-color: black;
+}
+
+#help-div {
     background-color: rgb(0, 119, 255);
+}
+
+#stats-div {
+    background-color: rgb(25, 59, 110);
 }
 
 input {

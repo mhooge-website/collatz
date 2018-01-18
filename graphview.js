@@ -6,7 +6,7 @@ function drawGraph(vertices, max) {
 
     if(max < 50) canvas.height = 50;
     else if(max < window.innerHeight * 0.75) canvas.height = max;
-    else canvas.height = window.innerHeight * 0.71;
+    else canvas.height = window.innerHeight * 0.7;
     canvas.width = 5 + vertices.length * 20;
     var ratio = (canvas.height-30)/max;
 
