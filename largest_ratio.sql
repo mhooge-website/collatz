@@ -1,5 +1,4 @@
-SELECT DISTINCT input, MAX(sp.co), sp.co FROM 
-(SELECT Count(*) AS co FROM collatz_graphs gra, collatz_steps WHERE gra.id = graph_id GROUP BY gra.id) sp, collatz_graphs WHERE 
-(SELECT MAX(s.c) FROM
-(SELECT Count(*) AS c FROM collatz_graphs gr, collatz_steps WHERE gr.id = graph_id GROUP BY gr.id) s) = 
-(SELECT Count(*) FROM collatz_steps WHERE graph_id = collatz_graphs.id);
+SELECT MAX(s2.r) AS maxratio, input, c1 FROM 
+(SELECT c1/input AS r, input, c1 FROM 
+(SELECT Count(*) AS c1, input FROM collatz_graphs cg, collatz_steps WHERE cg.id = graph_id 
+GROUP BY input, graph_id) s1) s2;

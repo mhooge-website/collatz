@@ -37,19 +37,21 @@
         <button onclick="displayInfo(false);">OK</button>
     </div>
     <div id="stats-div">
-        Of all the conjectures calculated:
-        <br><br>
-        Percentage reaching 1: {pct_done}.
-        <br><br>
-        Max steps for a graph: {max_steps},<br>
-        achieved with input {input_max}.
-        <br><br>
-        Average steps per graph: {avg_steps}.
-        <br><br>
-        Largest step to input ratio: {ratio},
-        achieved with input {input_ratio},
-        having {step_ratio} steps.
-        <br><br>
+        <p>Of all the conjectures calculated:</p>
+        <ul>
+            <li>Total graphs: <span class="stats-values">{graphs_total}</span>.</li>
+            <br>
+            <li>Percentage reaching 1: <span class="stats-values">{pct_done}</span>.</li>
+            <br>
+            <li>Max steps for a graph: <span class="stats-values">{max_steps}</span>,
+                achieved with input <span class="stats-values">{input_max}</span>.</li>
+            <br>
+            <li>Average steps per graph: <span class="stats-values">{avg_steps}</span>.</li>
+            <br>
+            <li>Largest step to input ratio: <span class="stats-values">{ratio}</span>,<br>
+                    achieved with input <span class="stats-values">{input_ratio}</span>,<br>
+                    having <span class="stats-values">{step_ratio}</span> steps.</li>
+        </ul>
         <button onclick="displayStats(false);">OK</button>
     </div>
 

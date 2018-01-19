@@ -1,5 +1,5 @@
 var highlightedButton;
-var debug = true;
+var debug = false;
 
 function init() {
     loadGraphStats();
@@ -9,18 +9,23 @@ function loadGraphStats() {
     var request = new XMLHttpRequest();
 
     request.onreadystatechange = function() {
-        console.log(this.responseText);
         if(this.readyState == 4 && this.status == 200) {
             let resArr = JSON.parse(this.responseText);
 
-            console.log(resArr[0][0]);
-            console.log(resArr[1][1]);
-            console.log(resArr[1][0]);
+            let statNodes = document.getElementsByClassName("stats-values");
+            let splitArrMax = (""+resArr[2][0]).split(",");
+            let splitArrRatio = (""+resArr[4][0]).split(",");
+            let pct = parseInt(resArr[1][0]) * 100;
+            let avg = parseInt(resArr[3][0]);
 
-            let text = document.getElementById("stats-div").textContent;
-            document.getElementById("stats-div").textContent = (text.replace("{pct_done}", resArr[0][0]).
-            replace("{max_steps}", resArr[1][1]).
-            replace("{input_max}", resArr[1][0]));
+            statNodes[0].textContent = statNodes[0].textContent.replace("{graphs_total}", resArr[0][0]);
+            statNodes[1].textContent = statNodes[1].textContent.replace("{pct_done}", pct + "%");
+            statNodes[2].textContent = statNodes[2].textContent.replace("{max_steps}", splitArrMax[0]);
+            statNodes[3].textContent = statNodes[3].textContent.replace("{input_max}", splitArrMax[1]);
+            statNodes[4].textContent = statNodes[4].textContent.replace("{avg_steps}", avg);
+            statNodes[5].textContent = statNodes[5].textContent.replace("{ratio}", splitArrRatio[0]);
+            statNodes[6].textContent = statNodes[6].textContent.replace("{input_ratio}", splitArrRatio[1]);
+            statNodes[7].textContent = statNodes[7].textContent.replace("{step_ratio}", splitArrRatio[2]);
         }
         else if(this.state == 500) console.log("Error saving graph: " + this.responseText);
     };

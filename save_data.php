@@ -10,7 +10,7 @@ if (!($stmt = $conn->prepare("INSERT INTO collatz_graphs(input) VALUES (?)"))) {
     echo "Prepare failed: (" . $conn->errno . ") " . $conn->error;
 }
 
-if (!($stmtSteps = $conn->prepare("INSERT INTO collatz_steps(graph_id, val) VALUES (?, ?) FOREIGN KEY (graph_id) REFERENCES collatz_graphs(id)"))) {
+if (!($stmtSteps = $conn->prepare("INSERT INTO collatz_steps(graph_id, val) VALUES (?, ?)"))) {
     http_response_code(500);
     echo "Prepare failed: (" . $conn->errno . ") " . $conn->error;
 }
