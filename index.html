@@ -12,15 +12,19 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Collatz Conjecture</title>
-    <link rel="stylesheet" type="text/css" href="/global-style.css">
+    <link rel="stylesheet" type="text/css" href="../../global-style.css">
+    <script src="/scripts/generate_nav.js"></script>
 </head>
-<body>
+<body onload="generate_nav('collatz');">
+    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css"/>
+	<script src="/bootstrap/js/jquery.min.js"></script>
+	<script src="/bootstrap/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/projects/collatz/collatz-style.css">
     <script src="/scripts/canvashelper.js"></script>
     <script src="/projects/collatz/graphview.js"></script>
     <script src="/projects/collatz/collatz.js"></script>
 
-    <div id="main-div">
+    <div id="main-div" class="content-div">
         <p id="header">Calculate Steps in Collatz Conjecture</p>
         <input type="text" id="number-input" placeholder="Starting number(s)" onchange="clearErrorMsg();" onkeypress="keyPressed(event);"></input>
         <button onclick="displayInfo(true)";>?</button>
@@ -29,7 +33,7 @@
     </div>
     <p id="result-tooltip"></p>
     <canvas id="canvas"></canvas>
-    <div id="help-div">
+    <div id="help-div" class="content-div">
         Collatz Conjecure: start with a number.
         If that number is even, divide it by 2.
         If it is odd, multiply it by 3 and add 1.
@@ -46,7 +50,7 @@
         <br><br>
         <button onclick="displayInfo(false);">OK</button>
     </div>
-    <div id="stats-div">
+    <div id="stats-div" class="content-div">
         <p>Of all the conjectures calculated:</p>
         <ul>
             <li>Total graphs: <span class="stats-values">{graphs_total}</span>.</li>
