@@ -47,7 +47,7 @@ function calculate(inputId) {
         return;
     }
 
-    vertices = new Array(inputArr.length);
+    var vertices = new Array(inputArr.length);
     var maximums = new Array(inputArr.length);
     if(inputArr.length > 1) {
         let multiDiv = createMultiInputDiv(vertices);
@@ -69,16 +69,16 @@ function calculate(inputId) {
         document.body.insertBefore(multiDiv, document.getElementById("result-tooltip"));
     }
     else {
-        if(inputArr < 2) {
-            showErrrorMsg(div, "Input must be larger than 1");
-            return
-        }
         let value = calculateCollatzValue(inputArr[0], vertices, maximums, 0);
 
         setResultTooltip(inputArr[0], value, vertices[0].length);
     }
     if(!debug) saveVertices(vertices);
-    drawGraph(vertices[0], maximums[0]);
+    let drawIndex = 0;
+    while (vertices[drawIndex] == undefined) {
+        drawIndex++;
+    }
+    drawGraph(vertices[drawIndex], maximums[drawIndex]);
 }
 
 function saveVertices(vertices) {
@@ -142,6 +142,11 @@ function parseInput(inputId) {
         if(type == "single") arr = [values];
         else if(type == "range") arr = extractRange(values);
         else if(type == "list") arr = extractList(values);
+        
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i] < 2) throw new  DOMException("All input must be larger than 1");
+        }
+
         return arr;
     }
     catch(e) {

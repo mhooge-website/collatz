@@ -3,6 +3,7 @@ var canvas;
 function drawGraph(vertices, max) {
     initializeCanvas();
     clearGraph();
+    console.log(vertices);
 
     if(max < 50) canvas.height = 50;
     else if(max < window.innerHeight * 0.75) canvas.height = max;
