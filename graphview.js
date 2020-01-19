@@ -31,7 +31,7 @@ function drawGraph(vertices, max) {
 
 function clearGraph() {
     if(canvas != null && canvas.style.display == "block") {
-        eraseAll();
+        eraseAll(canvas);
     }
 }
 
